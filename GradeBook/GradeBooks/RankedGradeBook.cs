@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+
 
 namespace GradeBook.GradeBooks
 {
@@ -16,35 +17,29 @@ namespace GradeBook.GradeBooks
             {
                 throw new InvalidOperationException();
             }
-            //todo
-            List<double> averageGrades = new List<double> { averageGrade };
-            foreach (var item in Students)
+            int above_avg = Students.Count(student => student.AverageGrade > averageGrade);
+            double students_part = Students.Count * 2 / 10;
+
+            if (above_avg >= 4 * students_part)
             {
-                averageGrades.Add(item.AverageGrade);
+                return 'F';
             }
-            averageGrades.Sort();
-            int index = averageGrades.IndexOf(averageGrade);
-            double num = index / averageGrades.Count;
-            if (num >= 0.8)
-            {
-                return 'A';
-            }
-            else if (num >= 0.6)
-            {
-                return 'B';
-            }
-            else if (num >= 0.4)
-            {
-                return 'C';
-            }
-            else if (num >= 0.2)
+            else if (above_avg >= 3 * students_part)
             {
                 return 'D';
             }
+            else if (above_avg >= 2 * students_part)
+            {
+                return 'C';
+            }
+            else if (above_avg >= students_part)
+            { 
+                return 'B';
+            }
             else
             {
-                return 'F';
-            }            
+                return 'A';
+            }
         }
         public override void CalculateStatistics()
         {
